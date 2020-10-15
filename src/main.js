@@ -31,10 +31,12 @@ Vue.filter('data', function (val, farmat = 'YYYY-MM-DD') {
 import HmHeader from './components/HmHeader.vue'
 import HmLogo from './components/HmLogo'
 import HmButton from './components/HmButton'
+import HmPost from './components/HmPost'
 
 Vue.component('hm-header', HmHeader)
 Vue.component('hm-logo', HmLogo)
 Vue.component('hm-button', HmButton)
+Vue.component('hm-post', HmPost)
 
 Vue.config.productionTip = false
 
