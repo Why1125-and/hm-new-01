@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <div class="header">
@@ -13,16 +12,102 @@
         <i class="iconfont iconwode"></i>
       </div>
     </div>
+    <van-tabs v-model="active" sticky>
+      <van-tab :title="tob.name" v-for="tob in tobList" :key="tob.id">
+        <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+          <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :immediate-check="false">
+            <hm-post v-for="post in postList" :key="post.id" :post="post"></hm-post>
+          </van-list>
+        </van-pull-refresh>
+      </van-tab>
+    </van-tabs>
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return{
+      active: 1,
+      tobList: [],
+      postList: [],
+      loading: false,
+      finished: false,
+      pageIndex: 1,
+      isLoading: false
+    }
+  },
+  created() {
+    this.getTobList()
+    // this.getPostList()
+  },
+  watch: {
+    active(newActive){
+      this.postList = []
+      this.pageIndex = 1
+
+      this.finished = false
+      this.loading=true
+
+      this.getPostList(this.tobList[newActive].id)
+    }
+  },
+  methods: {
+    async getTobList(id) {
+      let res = await this.$axios.get('/category')
+      // console.log(res.data);
+      const {statusCode, data} = res.data
+      if( statusCode === 200 ) {
+        this.tobList = data
+        this.getPostList(this.tobList[this.active].id)
+      }
+      
+    },
+    async getPostList (id) {
+      let res = await this.$axios.get('/post',{
+        params:{
+          category: id,
+          pageIndex: this.pageIndex,
+          pageSize: 5
+        }
+      })
+
+      // console.log(res);
+      const {statusCode, data} = res.data
+      if( statusCode === 200 ) {
+        this.postList = [...this.postList, ...data]
+        this.loading = false;
+        // console.log(this.postList);
+        this.isLoading = false
+      }
+      if(data.length < 5) {
+        this.finished=true
+      }
+
+    },
+    onLoad() {
+      // console.log('到底了');
+      this.pageIndex++
+      this.getPostList(this.tobList[this.active].id)
+    },
+    onRefresh() {
+      this.postList=[]
+      this.pageIndex=1
+
+      this.finished = false
+      this.loading = true
+
+      this.getPostList(this.tobList[this.active].id)
+    }
+  }
 
 }
 </script>
 
 <style lang='less' scoped>
+ /deep/.van-tabs__nav {
+   background: #ddd;
+ }
  .header{
    display: flex;
    height: 50px;
