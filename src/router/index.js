@@ -9,6 +9,7 @@ import MyFollow from '../views/MyFollow.vue'
 import MyComments from '../views/MyComments.vue'
 import MyStar from '../views/MyStar.vue'
 import Home from '../views/Home.vue'
+import Detail from '../views/Detail.vue'
 
 Vue.use(VueRouter)
 
@@ -23,8 +24,14 @@ const router = new VueRouter({
     { path: '/my-comments', component: MyComments },
     { path: '/my-star', component: MyStar },
     { path: '/home', component: Home },
+    { path: '/detail/:id', component: Detail },
   ]
 })
+
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token')

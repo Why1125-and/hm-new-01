@@ -8,15 +8,31 @@
         <i class="iconfont iconsearch"></i>
         <span>搜索新闻</span>
       </div>
-      <div class="myself">
+      <div class="myself" @click="$router.push('/user')">
         <i class="iconfont iconwode"></i>
       </div>
     </div>
+    <van-sticky z-index="999">
+      <div class="more" @click="$router.push('/tabsedit')">
+        <i class="iconfont iconjiantou1"></i>
+      </div>
+    </van-sticky>
     <van-tabs v-model="active" sticky>
       <van-tab :title="tob.name" v-for="tob in tobList" :key="tob.id">
         <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
-          <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :immediate-check="false">
-            <hm-post v-for="post in postList" :key="post.id" :post="post"></hm-post>
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+            :immediate-check="false"
+          >
+            <hm-post
+              v-for="post in postList"
+              :key="post.id"
+              :post="post"
+              @click.native="$router.push(`/detail/${post.id}`)"
+            ></hm-post>
           </van-list>
         </van-pull-refresh>
       </van-tab>
@@ -26,8 +42,8 @@
 
 <script>
 export default {
-  data() {
-    return{
+  data () {
+    return {
       active: 1,
       tobList: [],
       postList: [],
@@ -37,35 +53,35 @@ export default {
       isLoading: false
     }
   },
-  created() {
+  created () {
     this.getTobList()
     // this.getPostList()
   },
   watch: {
-    active(newActive){
+    active (newActive) {
       this.postList = []
       this.pageIndex = 1
 
       this.finished = false
-      this.loading=true
+      this.loading = true
 
       this.getPostList(this.tobList[newActive].id)
     }
   },
   methods: {
-    async getTobList(id) {
+    async getTobList (id) {
       let res = await this.$axios.get('/category')
       // console.log(res.data);
-      const {statusCode, data} = res.data
-      if( statusCode === 200 ) {
+      const { statusCode, data } = res.data
+      if (statusCode === 200) {
         this.tobList = data
         this.getPostList(this.tobList[this.active].id)
       }
-      
+
     },
     async getPostList (id) {
-      let res = await this.$axios.get('/post',{
-        params:{
+      let res = await this.$axios.get('/post', {
+        params: {
           category: id,
           pageIndex: this.pageIndex,
           pageSize: 5
@@ -73,75 +89,86 @@ export default {
       })
 
       // console.log(res);
-      const {statusCode, data} = res.data
-      if( statusCode === 200 ) {
+      const { statusCode, data } = res.data
+      if (statusCode === 200) {
         this.postList = [...this.postList, ...data]
         this.loading = false;
         // console.log(this.postList);
         this.isLoading = false
       }
-      if(data.length < 5) {
-        this.finished=true
+      if (data.length < 5) {
+        this.finished = true
       }
 
     },
-    onLoad() {
+    onLoad () {
       // console.log('到底了');
       this.pageIndex++
       this.getPostList(this.tobList[this.active].id)
     },
-    onRefresh() {
-      this.postList=[]
-      this.pageIndex=1
+    onRefresh () {
+      this.postList = []
+      this.pageIndex = 1
 
       this.finished = false
       this.loading = true
 
       this.getPostList(this.tobList[this.active].id)
-    }
+    },
   }
 
 }
 </script>
 
 <style lang='less' scoped>
- /deep/.van-tabs__nav {
-   background: #ddd;
- }
- .header{
-   display: flex;
-   height: 50px;
-   line-height: 50px;
-   background: #f00;
-   text-align: center;
-   .logo{
-     width: 60px;
-     color: #fff;
-     .iconfont{
-       font-size: 42px;
-     }
-   }
-   .search{
-     margin: 8px 0;
-     line-height: 34px;
-     flex: 1;
-     color: #fff;
-     background: rgba(255, 255, 255, .5);
-     border-radius: 16px;
-     .iconfont{
+/deep/.van-tabs__nav {
+  background: #ddd;
+  margin-right: 40px;
+}
+.more {
+  position: absolute;
+  right: 0;
+  width: 40px;
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  background: #ddd;
+  z-index: 999;
+}
+.header {
+  display: flex;
+  height: 50px;
+  line-height: 50px;
+  background: #f00;
+  text-align: center;
+  .logo {
+    width: 60px;
+    color: #fff;
+    .iconfont {
+      font-size: 42px;
+    }
+  }
+  .search {
+    margin: 8px 0;
+    line-height: 34px;
+    flex: 1;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    .iconfont {
       font-size: 16px;
       margin-right: 6px;
-     }
-     span{
-       font-size: 14px;
-     }
-   }
-   .myself{
-     width: 60px;
-     color: #fff;
-     .iconfont{
-       font-size: 26px;
-     }
-   }
- }
+    }
+    span {
+      font-size: 14px;
+    }
+  }
+  .myself {
+    width: 60px;
+    color: #fff;
+    .iconfont {
+      font-size: 26px;
+    }
+  }
+}
 </style>

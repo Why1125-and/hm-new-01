@@ -6,7 +6,7 @@ import 'lib-flexible'
 import './styles/base.less'
 import './styles/iconfont.css'
 
-import { Field,Toast,Cell, CellGroup,Dialog,Radio,RadioGroup,Uploader,List,Tab,Tabs,PullRefresh } from 'vant'
+import { Field,Toast,Cell, CellGroup,Dialog,Radio,RadioGroup,Uploader,List,Tab,Tabs,PullRefresh,Sticky } from 'vant'
 Vue.use(Field)
 Vue.use(Toast)
 Vue.use(Cell)
@@ -19,6 +19,7 @@ Vue.use(List)
 Vue.use(Tab)
 Vue.use(Tabs)
 Vue.use(PullRefresh)
+Vue.use(Sticky)
 
 
 import axios from 'axios'
