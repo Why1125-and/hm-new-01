@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="detail-header">
-      <div class="head-left">
+      <div class="head-left" @click="$router.back()">
         <i class="iconfont iconjiantou2"></i>
       </div>
       <div class="head-center">
@@ -15,7 +15,8 @@
     <div class="content">
       <div class="title">{{detail.title}}</div>
       <div class="name-time">
-        <span>新华网</span>
+        <span v-if="detail.user">{{detail.user.nickname}}</span>
+        <span v-else></span>
         <span>{{detail.create_date | data}}</span>
       </div>
     </div>
