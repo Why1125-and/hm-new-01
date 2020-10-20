@@ -6,7 +6,7 @@ import 'lib-flexible'
 import './styles/base.less'
 import './styles/iconfont.css'
 
-import { Field,Toast,Cell, CellGroup,Dialog,Radio,RadioGroup,Uploader,List,Tab,Tabs,PullRefresh,Sticky } from 'vant'
+import { Field,Toast,Cell, CellGroup,Dialog,Radio,RadioGroup,Uploader,List,Tab,Tabs,PullRefresh,Sticky,Icon } from 'vant'
 Vue.use(Field)
 Vue.use(Toast)
 Vue.use(Cell)
@@ -20,6 +20,7 @@ Vue.use(Tab)
 Vue.use(Tabs)
 Vue.use(PullRefresh)
 Vue.use(Sticky)
+Vue.use(Icon)
 
 
 import axios from 'axios'
@@ -36,11 +37,15 @@ import HmHeader from './components/HmHeader.vue'
 import HmLogo from './components/HmLogo'
 import HmButton from './components/HmButton'
 import HmPost from './components/HmPost'
+import HmComment from './components/HmComment'
+import HmFloor from './components/HmFloor'
 
 Vue.component('hm-header', HmHeader)
 Vue.component('hm-logo', HmLogo)
 Vue.component('hm-button', HmButton)
 Vue.component('hm-post', HmPost)
+Vue.component('hm-comment', HmComment)
+Vue.component('hm-floor', HmFloor)
 
 Vue.config.productionTip = false
 
