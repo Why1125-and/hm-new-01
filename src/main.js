@@ -6,7 +6,22 @@ import 'lib-flexible'
 import './styles/base.less'
 import './styles/iconfont.css'
 
-import { Field,Toast,Cell, CellGroup,Dialog,Radio,RadioGroup,Uploader,List,Tab,Tabs,PullRefresh,Sticky,Icon } from 'vant'
+import {
+  Field,
+  Toast,
+  Cell,
+  CellGroup,
+  Dialog,
+  Radio,
+  RadioGroup,
+  Uploader,
+  List,
+  Tab,
+  Tabs,
+  PullRefresh,
+  Sticky,
+  Icon,
+} from 'vant'
 Vue.use(Field)
 Vue.use(Toast)
 Vue.use(Cell)
@@ -22,16 +37,14 @@ Vue.use(PullRefresh)
 Vue.use(Sticky)
 Vue.use(Icon)
 
-
 import axios from 'axios'
-axios.defaults.baseURL='http://localhost:3000'
+axios.defaults.baseURL = 'http://localhost:3000'
 Vue.prototype.$axios = axios
 
 import moment from 'moment'
-Vue.filter('data', function (val, farmat = 'YYYY-MM-DD') {
+Vue.filter('data', function(val, farmat = 'YYYY-MM-DD') {
   return moment(val).format(farmat)
 })
-
 
 import HmHeader from './components/HmHeader.vue'
 import HmLogo from './components/HmLogo'
@@ -51,7 +64,7 @@ Vue.config.productionTip = false
 
 // 请求拦截器
 axios.interceptors.request.use(config => {
-  let token =  localStorage.getItem('token')
+  let token = localStorage.getItem('token')
   if (token) {
     config.headers.Authorization = token
   }
@@ -61,7 +74,7 @@ axios.interceptors.request.use(config => {
 // 响应拦截器
 axios.interceptors.response.use(res => {
   const { statusCode, message } = res.data
-  
+
   if (statusCode === 401 && message === '用户信息验证失败') {
     localStorage.removeItem('token')
     localStorage.removeItem('user_id')
@@ -71,7 +84,10 @@ axios.interceptors.response.use(res => {
   return res
 })
 
+const bus = new Vue()
+Vue.prototype.$bus = bus
+
 new Vue({
   router,
-  render: h => h(App)
+  render: h => h(App),
 }).$mount('#app')

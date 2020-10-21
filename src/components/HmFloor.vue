@@ -7,8 +7,8 @@
           <span>{{count}}楼</span>
           <span>{{parent.user.nickname}}</span>
         </div>
-        <div class="time">{{parent.create_date}}</div>
-        <div class="reply">回复</div>
+        <div class="time">{{parent.create_date | data}}</div>
+        <div class="reply" @click="reply">回复</div>
       </div>
       <div class="floor-content">{{parent.content}}</div>
     </div>
@@ -18,7 +18,12 @@
 <script>
 export default {
   props: ['parent', 'count'],
-  name: 'hm-floor'
+  name: 'hm-floor',
+  methods: {
+    reply () {
+      this.$bus.$emit('reply', this.parent.id, this.parent.user.nickname)
+    }
+  }
 }
 </script>
 
@@ -36,7 +41,7 @@ export default {
   .floor-header {
     display: flex;
     .floor-name {
-      width: 70px;
+      width: 90px;
       span {
         margin-right: 5px;
       }

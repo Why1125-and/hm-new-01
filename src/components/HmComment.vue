@@ -8,9 +8,9 @@
         </div>
         <div class="center">
           <div class="name">{{comment.user.nickname}}</div>
-          <div class="time">{{comment.create_date}}</div>
+          <div class="time">{{comment.create_date | data}}</div>
         </div>
-        <div class="right">回复</div>
+        <div class="right" @click="reply">回复</div>
       </div>
       <hm-floor :count="getCount(0, comment)" v-if="comment.parent" :parent="comment.parent"></hm-floor>
       <div class="reply">{{comment.content}}</div>
@@ -22,6 +22,9 @@
 export default {
   props: ['comment'],
   methods: {
+    reply () {
+      this.$bus.$emit('reply', this.comment.id, this.comment.user.nickname)
+    },
     getCount (num, parent) {
       if (parent.parent) {
         return this.getCount(num + 1, parent.parent)
