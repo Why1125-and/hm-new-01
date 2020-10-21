@@ -10,22 +10,24 @@ import MyComments from '../views/MyComments.vue'
 import MyStar from '../views/MyStar.vue'
 import Home from '../views/Home.vue'
 import Detail from '../views/Detail.vue'
+import TabsEdit from '../views/TabsEdit.vue'
 
 Vue.use(VueRouter)
 
 const router = new VueRouter({
   routes: [
     { path: '/', redirect: '/login' },
-    { path: '/login', name:'login', component: Login },
-    { path: '/register', name:'register', component: Register },
-    { path: '/user', name:'user', component: User },
-    { path: '/edit', name:'edit', component: Edit },
+    { path: '/login', name: 'login', component: Login },
+    { path: '/register', name: 'register', component: Register },
+    { path: '/user', name: 'user', component: User },
+    { path: '/edit', name: 'edit', component: Edit },
     { path: '/my-follow', component: MyFollow },
     { path: '/my-comments', component: MyComments },
     { path: '/my-star', component: MyStar },
     { path: '/home', component: Home },
     { path: '/detail/:id', component: Detail },
-  ]
+    { path: '/tabsedit', component: TabsEdit },
+  ],
 })
 
 const originalPush = VueRouter.prototype.push
@@ -42,8 +44,6 @@ router.beforeEach((to, from, next) => {
     } else {
       next('/login')
     }
-  } else (
-    next()
-  )
+  } else next()
 })
 export default router

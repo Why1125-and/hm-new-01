@@ -84,7 +84,7 @@ export default {
 
       this.isShow = true
       await this.$nextTick()
-      this.$refs.textarea.focus()
+      this.$refs.textarea && this.$refs.textarea.focus()
     })
   },
   methods: {
@@ -161,7 +161,7 @@ export default {
         content: this.content,
         parent_id: this.replyId
       })
-      console.log(res);
+      // console.log(res);
       if (res.data.statusCode === 200) {
         this.getComments()
         this.content = ''
@@ -263,7 +263,7 @@ video {
   bottom: 0;
   width: 100%;
   .input {
-    height: 40px;
+    height: 50px;
     display: flex;
     .left {
       flex: 1;
